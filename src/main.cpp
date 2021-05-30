@@ -1,24 +1,27 @@
-// Executables must have the following defined if the library contains
-// doctest definitions. For builds with this disabled, e.g. code shipped to
-// users, this can be left out.
-#ifdef ENABLE_DOCTEST_IN_LIBRARY
-#define DOCTEST_CONFIG_IMPLEMENT
-#include "../tests/doctest/doctest.h"
-#endif
-
 #include <iostream>
-#include <stdlib.h>
 #include <iomanip>
 #include <fstream>
-#include <string>
-
-#include "exampleConfig.h"
-#include "example.h"
+#include "Wektor3D.hh"
+#include "Macierz3x3.hh"
+#include "Prostopadloscian.hh"
 #include "lacze_do_gnuplota.hh"
+
+
+
+using namespace std;
+
+/*
+ * Tu definiujemy pozostale funkcje.
+ * Lepiej jednak stworzyc dodatkowy modul
+ * i tam je umiescic. Ten przyklad pokazuje
+ * jedynie absolutne minimum.
+ */
+
 
 #define DL_BOKU   50
 
-using namespace std;
+
+
 
 
 /*!
@@ -144,29 +147,11 @@ bool PrzykladZapisuWspolrzednychDoPliku( const char  *sNazwaPliku,
 
 
 
-
-
-
-/*
- * Simple main program that demontrates how access
- * CMake definitions (here the version number) from source code.
- */
-int main() {
-  cout << "C++ Boiler Plate v"
-            << PROJECT_VERSION_MAJOR
-            << "."
-            << PROJECT_VERSION_MINOR
-            << "."
-            << PROJECT_VERSION_PATCH
-            << "."
-            << PROJECT_VERSION_TWEAK
-            << endl;
-  system("cat ../LICENSE");
-
-  //Prostopadloscian             Pr;   // To tylko przykladowe definicje zmiennej
+int main()
+{
+  Prostopadloscian             Pr;   // To tylko przykladowe definicje zmiennej
   PzG::LaczeDoGNUPlota  Lacze;  // Ta zmienna jest potrzebna do wizualizacji
                                 // rysunku prostokata
-
 
    //-------------------------------------------------------
    //  Wspolrzedne wierzcholkow beda zapisywane w pliku "prostokat.dat"
@@ -202,9 +187,4 @@ int main() {
   Lacze.Rysuj(); // <- Tutaj gnuplot rysuje, to co zapisaliśmy do pliku
   cout << "Naciśnij ENTER, aby kontynuowac" << endl;
   cin.ignore(10000,'\n');
-
-  // Bring in the dummy class from the example source,
-  // just to show that it is accessible from main.cpp.
-  Dummy d = Dummy();
-  return d.doSomething() ? 0 : -1;
 }
