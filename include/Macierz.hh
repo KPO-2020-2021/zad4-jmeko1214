@@ -1,59 +1,62 @@
 #ifndef MACIERZ_HH
 #define MACIERZ_HH
 
-
+#include "size.hh"
+#include "Wektor.hh"
 #include <iostream>
-
+#include <cstdlib>
+#include <cmath>
 
 /*!
  * \file
- * \brief Ten plik powinien zawierać definicję szablonu Macierz<>
+ * \brief Ten plik zawiera definicję szablonu klasy Macierz<>
  *
- * Ten plik powinien zawierać definicję szablonu Macierz<>.
- * W tym celu należy przerobić definicję klasy Macierz2x2.
+ * Ten plik zawiera definicję szablonu Macierz<>.
+ * W tym celu przerobiono definicję klasy Macierz2x2.
  */
-
-
 
 
 /*!
- * \brief  Krótki opis czego to jest szablon
+ * \brief  Szablon klasy macierz.
  *
- *  Tutaj trzeba opisac szablon. Jakie pojecie on modeluje
- *  i jakie ma glowne cechy.
+ *  Szablon klasy reprezentuje macierz kwadratowa o zadanym rozmiarze.
+ *  Na macierzy mozna wykonywac podstawowe dzialania matematyczne.
  */
-template <int Wymiar>
-class Macierz{
-  /*
-   *  Tutaj trzeba wstawic definicje odpowiednich pol i metod prywatnych
-   */
+template <int SIZE>
+class Macierz
+{
+    double value[SIZE][SIZE];               // Wartosci macierzy
+  
   public:
-  /*
-   *  Tutaj trzeba wstawic definicje odpowiednich metod publicznych
-   */    
+    Macierz<SIZE>(double [SIZE][SIZE]);            // Konstruktor klasy
+    Macierz<SIZE>();                               // Konstruktor klasy
+    //Metody
+    void MacierzObrotu(double stopnie);      // tworzy macierz obrotu o kat w stopniach
+    //Przeciazenia operatorow
+    Wektor<SIZE> operator * (Wektor<SIZE> tmp);           // Operator mnożenia przez wektor
+    Macierz<SIZE> operator + (Macierz<SIZE> tmp);
+    double  &operator () (unsigned int row, unsigned int column);
+    const double &operator () (unsigned int row, unsigned int column) const;
+    bool operator == (const Macierz<SIZE> &Macierz) const;
+    bool operator != (const Macierz<SIZE> &Macierz) const;  
 };
 
-
-
+/*!
+ * \brief Przeciążenie operatora wczytania.
+ * 
+ * Strumien wczytuje dane macierzy i je zapisuje.
+ */
+template <int SIZE>
+inline
+std::istream &operator>>(std::istream &Strm, Macierz<SIZE> &Mac);
 
 /*!
- * \brief Przeciążenie dla wejścia musi także być szablonem
+ * \brief Przeciążenie operatora wypisania.
  * 
- * To przeciazenie trzeba opisac. Co ono robi. Jaki format
- * danych akceptuje. Jakie jest znaczenie parametrow itd.
- * Szczegoly dotyczace zalecen realizacji opisow mozna
- * znalezc w pliku:
- *    ~bk/edu/kpo/zalecenia.txt 
+ * Strumien wypisuje zapisane dane macierzy.
  */
-template <int Wymiar>
+template <int SIZE>
 inline
-std::ostream& operator << (std::ostream &Strm, const Macierz<Wymiar> &Wek)
-{
-  /*!
-   * Zawartość powinna być przeróbką przeciążenia dla klasy Macierz2x2
-   */
-  return Strm;  
-}
-
+std::ostream& operator<<(std::ostream &Strm, const Macierz<SIZE> &Mac);
 
 #endif

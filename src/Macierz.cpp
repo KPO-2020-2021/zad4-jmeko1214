@@ -1,0 +1,214 @@
+#include "Macierz.hh"
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+
+/******************************************************************************
+ |  Konstruktor klasy Macierz.                                                 |
+ |  Argumenty:                                                                |
+ |      Brak argumentow.                                                      |
+ |  Zwraca:                                                                   |
+ |      Macierz wypelniona wartoscia 0.                                       |
+ */
+Macierz<SIZE>::Macierz() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            value[i][j] = 0;
+        }
+    }
+}
+
+
+/******************************************************************************
+ |  Konstruktor parametryczny klasy Macierz.                                   |
+ |  Argumenty:                                                                |
+ |      tmp - dwuwymiarowa tablica z elementami typu double.                  |
+ |  Zwraca:                                                                   |
+ |      Macierz wypelniona wartosciami podanymi w argumencie.                 |
+ */
+Macierz<SIZE>::Macierz(double tmp[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            value[i][j] = tmp[i][j];
+        }
+    }
+}
+
+/******************************************************************************
+ |  Realizuje metode obrotu macierzy o kat.                                   |
+ |  Argumenty:                                                                |
+ |      value - wartosci poszczegolnych pol macierzy                          |
+ |  Zwraca:                                                                   |
+ |      Macierz obrotu                    |
+ */
+void Macierz<SIZE>::MacierzObrotu(double stopnie)
+{
+    double radiany = stopnie*M_PI/180;           //zamienia stopnie na radiany
+    //macierz obrotu
+    value[0][0]= cos(radiany);
+    value[0][1]= sin(radiany);
+    value[1][0]=-sin(radiany);
+    value[1][1]= cos(radiany);                   
+}
+
+/******************************************************************************
+ |  Realizuje mnozenie macierzy przez wektor.                                 |
+ |  Argumenty:                                                                |
+ |      this - macierz, czyli pierwszy skladnik mnozenia,                     |
+ |      v - wektor, czyli drugi skladnik mnozenia.                            |
+ |  Zwraca:                                                                   |
+ |      Iloczyn dwoch skladnikow przekazanych jako wektor.                    |
+ */
+
+Wektor<SIZE> Macierz<SIZE>::operator * (Wektor<SIZE> tmp) {
+    Wektor<SIZE> result;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            result[i] += value[i][j] * tmp[j];
+        }
+    }
+    return result;
+}
+
+
+/******************************************************************************
+ |  Funktor macierzy                                                          |
+ |  Argumenty:                                                                |
+ |      row - numer wiersza.                                                  |
+ |      column - numer kolumny.                                               |
+ |  Zwraca:                                                                   |
+ |      Wartosc macierzy w danym miejscu tablicy.                             |
+ */
+double &Macierz<SIZE>::operator()(unsigned int row, unsigned int column) {
+
+    if (row >= SIZE) {
+        std::cout << "Error: Macierz jest poza zasiegiem"; 
+        exit(0); // lepiej byłoby rzucić wyjątkiem stdexcept
+    }
+
+    if (column >= SIZE) {
+        std::cout << "Error: Macierz jest poza zasiegiem";
+        exit(0); // lepiej byłoby rzucić wyjątkiem stdexcept
+    }
+
+    return value[row][column];
+}
+
+
+/******************************************************************************
+ |  Funktor macierzy                                                          |
+ |  Argumenty:                                                                |
+ |      row - numer wiersza.                                                  |
+ |      column - numer kolumny.                                               |
+ |  Zwraca:                                                                   |
+ |      Wartosc macierzy w danym miejscu tablicy jako stala.                  |
+ */
+const double &Macierz<SIZE>::operator () (unsigned int row, unsigned int column) const {
+
+    if (row >= SIZE) {
+        std::cout << "Error: Macierz jest poza zasiegiem";
+        exit(0); // lepiej byłoby rzucić wyjątkiem stdexcept
+    }
+
+    if (column >= SIZE) {
+        std::cout << "Error: Macierz jest poza zasiegiem";
+        exit(0); // lepiej byłoby rzucić wyjątkiem stdexcept
+    }
+
+    return value[row][column];
+}
+
+/******************************************************************************
+ |  Przeciążenie dodawania macierzy                                           |
+ |  Argumenty:                                                                |
+ |      this - macierz, czyli pierwszy skladnik dodawania,                    |
+ |      v - wektor, czyli drugi skladnik dodawania.                           |
+ |  Zwraca:                                                                   |
+ |      Macierz - iloczyn dwóch podanych macierzy.                            |
+ */
+Macierz<SIZE> Macierz<SIZE>::operator + (Macierz<SIZE> tmp) {
+    Macierz<SIZE> result;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            result(i, j) = this->value[i][j] + tmp(i, j);
+        }
+    }
+    return result;
+}
+
+/******************************************************************************
+ |  Przeciazenie operatora porowanania ==.                                    |
+ |  Argumenty:                                                                |
+ |      Macierz i wskaźnik na Macierz.                                        |
+ |  Zwraca:                                                                   |
+ |      Wartość True lub False.                                               |
+ */
+bool Macierz<SIZE>::operator == (const Macierz<SIZE> &Macierz) const
+{
+    for(int i=0; i<SIZE; i++)
+    {
+        for(int j=0; j<SIZE; j++)
+        {
+            if(this->value[i][j] != Macierz.value[i][j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/******************************************************************************
+ |  Przeciazenie operatora porowanania !=.                                    |
+ |  Argumenty:                                                                |
+ |      Macierz i wskaźnik na Macierz.                                        |
+ |  Zwraca:                                                                   |
+ |      Wartość True lub False.                                               |
+ */
+bool Macierz<SIZE>::operator != (const Macierz<SIZE> &Macierz) const
+{
+    if(*this == Macierz)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+/******************************************************************************
+ |  Przeciazenie operatora >>                                                 |
+ |  Argumenty:                                                                |
+ |      Strm - strumien wyjsciowy,                                            |
+ |      Mac - macierz.                                                        |
+ */
+std::istream &operator>>(std::istream &Strm, Macierz<SIZE> &Mac) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            Strm >> Mac(i, j);
+        }
+    }
+    return Strm;
+}
+
+
+/******************************************************************************
+ |  Przeciazenie operatora <<                                                 |
+ |  Argumenty:                                                                |
+ |      Strm - strumien wejsciowy,                                            |
+ |      Mac - macierz.                                                        |
+ */
+std::ostream &operator<<(std::ostream &Strm, const Macierz<SIZE> &Mac) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            Strm << "| " << std::setw(15) << std::fixed << std::setprecision(10) << Mac(i, j) << " | "; //wyswietlanie macierzy
+        }
+        std::cout << std::endl;
+    }
+    return Strm;
+}
+
+
+

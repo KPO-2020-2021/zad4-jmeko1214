@@ -13,6 +13,7 @@
 #include <string>
 
 #include "Wektor.hh"
+#include "Macierz.hh"
 #include "exampleConfig.h"
 #include "example.h"
 #include "lacze_do_gnuplota.hh"
