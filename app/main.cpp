@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 
+#include "Wektor.hh"
 #include "exampleConfig.h"
 #include "example.h"
 #include "lacze_do_gnuplota.hh"
@@ -110,7 +111,6 @@ void PrzykladZapisuWspolrzednychDoStrumienia( ostream&     StrmWy,
 }
 
 
-
 /*!
  * Przyklad zapisu wspolrzednych zbioru punktow do pliku, z ktorego
  * dane odczyta program gnuplot i narysuje je w swoim oknie graficznym.
@@ -143,10 +143,6 @@ bool PrzykladZapisuWspolrzednychDoPliku( const char  *sNazwaPliku,
 }
 
 
-
-
-
-
 /*
  * Simple main program that demontrates how access
  * CMake definitions (here the version number) from source code.
@@ -161,7 +157,6 @@ int main() {
             << "."
             << PROJECT_VERSION_TWEAK
             << endl;
-  system("cat ../LICENSE");
 
   //Prostopadloscian             Pr;   // To tylko przykladowe definicje zmiennej
   PzG::LaczeDoGNUPlota  Lacze;  // Ta zmienna jest potrzebna do wizualizacji
