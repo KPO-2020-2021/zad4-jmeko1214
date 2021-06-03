@@ -1,34 +1,50 @@
-#ifndef PROSTOKAT_HH
-#define PROSTOKAT_HH
+#ifndef PROSTOPADLOSCIAN_HH
+#define PROSTOPADLOSCIAN_HH
 
-#include <iostream>
+#define WIERZCHOLKI 8
 
+#include "Macierz.hh"
+#include "Macierz3x3.hh"
+#include "Wektor.hh"
+#include "Wektor3D.hh"
+#include <iostream>                                                                                                                                                                                                                                                                                                                                         
+#include <cstdlib>
+#include <iomanip>
+#include <fstream>
+#include <cmath>
 
-/*
- *  Tutaj trzeba opisac klase. Jakie pojecie modeluje ta klasa
- *  i jakie ma glowne cechy.
+/*!
+ *  \brief Definicja klasy Prostopadloscian.
+ *
+ * Klasa reprezentuje prostopadloscian, obiekt skladajacy 
+ * sie z 8 wierzcholkow. Prostopadloscian mozna przesuwac,
+ * obracac, wyswietlac jego wierzcholki oraz sprawdzac, czy
+ * po tych operacjach boki sa rowne.
  */
 class Prostopadloscian {
-  /*
-   *  Tutaj trzeba wstawic definicje odpowiednich pol i metod prywatnych
-   */
+    Wektor3D wierzcholek[WIERZCHOLKI];
+    //zaprzyjaznienie funkcji by moc wyswietlac wspolrzedne wierzcholkow prostopadloscianu
+    friend std::ostream & operator << (std::ostream &Strm, const Prostopadloscian &Pr);
+
   public:
-  /*
-   *  Tutaj trzeba wstawic definicje odpowiednich metod publicznych
-   */    
+    bool Obrot(double &kat);                    //metoda odpowiada za obrot prostopadlosciana o dany kat                                                                                                                                                                                                                                                                                
+    bool Obrot(double &kat, char Os);           //metoda odpowiada o obrot okresliona os o dany kat
+
+    bool Przesuniecie(const Wektor3D &wektor);
+    void Boki() const;                          //sprawdza dlugosci poszczegolnych bokow
+
+    Wektor3D & operator[] (unsigned int index);         //przeciazenie operatora indeksowania, sluzy do odczytu i zapisu wierzcholkow
+    bool operator == (const Prostopadloscian &prosty) const;
+    bool operator != (const Prostopadloscian &prosty) const;
 };
-
-
-/*
- * To przeciazenie trzeba opisac. Co ono robi. Jaki format
- * danych akceptuje. Jakie jest znaczenie parametrow itd.
- * Szczegoly dotyczace zalecen realizacji opisow mozna
- * znalezc w pliku:
- *    ~bk/edu/kpo/zalecenia.txt 
+  
+/*!
+ * \brief Przeciazenie operatora wyswietlania.
+ *
+ * Przeciazenie sluzy do przekazywania do strumienia wspolrzednych
+ * wierzcholkow prostopadloscianu.
  */
-std::ostream& operator << ( std::ostream       &Strm, 
-                            const Prostopadloscian    &Pr
-                          );
-
+//wyswietla wspolrzedne wierzcholkow prostopadlosciana 
+std::ostream& operator << ( std::ostream &Strm, const Prostopadloscian &Pr); 
 
 #endif
