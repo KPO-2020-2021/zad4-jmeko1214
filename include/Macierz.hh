@@ -30,8 +30,6 @@ class Macierz
   public:
     Macierz<SIZE>(double [SIZE][SIZE]);            // Konstruktor klasy
     Macierz<SIZE>();                               // Konstruktor klasy
-    //Metody
-    void MacierzObrotu(double stopnie);      // tworzy macierz obrotu o kat w stopniach
     //Przeciazenia operatorow
     Wektor<SIZE> operator * (Wektor<SIZE> tmp);           // Operator mnożenia przez wektor
     Macierz<SIZE> operator + (Macierz<SIZE> tmp);

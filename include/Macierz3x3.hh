@@ -1,6 +1,8 @@
 #ifndef MACIERZ3X3_HH
 #define MACIERZ3X3_HH
 
+#define PI 3.1415926535
+
 #include <iostream>
 
 #include "Macierz.hh"
@@ -14,5 +16,13 @@
  *  oraz wyswietlac.
  */
 typedef Macierz<3>  Macierz3x3;
+
+/*!
+ * \brief Metoda klasy Macierz3x3.
+ *
+ *  Metoda sluzy do generowania macierzy obrotu o zadany kat,
+ *  wokol wybranej osi.
+ */
+Macierz3x3 MacierzObrotu(double kat, char Os);
 
 #endif

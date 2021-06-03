@@ -36,23 +36,6 @@ Macierz<SIZE>::Macierz(double tmp[SIZE][SIZE]) {
 }
 
 /******************************************************************************
- |  Realizuje metode obrotu macierzy o kat.                                   |
- |  Argumenty:                                                                |
- |      value - wartosci poszczegolnych pol macierzy                          |
- |  Zwraca:                                                                   |
- |      Macierz obrotu                    |
- */
-void Macierz<SIZE>::MacierzObrotu(double stopnie)
-{
-    double radiany = stopnie*M_PI/180;           //zamienia stopnie na radiany
-    //macierz obrotu
-    value[0][0]= cos(radiany);
-    value[0][1]= sin(radiany);
-    value[1][0]=-sin(radiany);
-    value[1][1]= cos(radiany);                   
-}
-
-/******************************************************************************
  |  Realizuje mnozenie macierzy przez wektor.                                 |
  |  Argumenty:                                                                |
  |      this - macierz, czyli pierwszy skladnik mnozenia,                     |
@@ -70,7 +53,6 @@ Wektor<SIZE> Macierz<SIZE>::operator * (Wektor<SIZE> tmp) {
     }
     return result;
 }
-
 
 /******************************************************************************
  |  Funktor macierzy                                                          |
