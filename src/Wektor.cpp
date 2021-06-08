@@ -216,7 +216,7 @@ template <int SIZE>
 std::ostream &operator << (std::ostream &Strm, Wektor<SIZE> const &Wek) {
     for (int i = 0; i < SIZE; ++i) 
     {
-        Strm <<"\t"<<std::setprecision(10)<<std::fixed<< tmp[i] << "\t";
+        Strm <<"\t"<<std::setprecision(10)<<std::fixed<<Wek[i] << "\t";
     }
     return Strm;
 }
@@ -232,7 +232,7 @@ template <int SIZE>
 std::istream &operator >> (std::istream &Strm, Wektor<SIZE> &Wek) {
     for (int i = 0; i < SIZE; ++i) 
     {
-        Strm >> tmp[i];
+        Strm >> Wek[i];
     }
     std::cout << std::endl;
     return Strm;

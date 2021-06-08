@@ -11,6 +11,7 @@
  |  Zwraca:                                                                   |
  |      Macierz wypelniona wartoscia 0.                                       |
  */
+template <int SIZE>
 Macierz<SIZE>::Macierz() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -19,7 +20,6 @@ Macierz<SIZE>::Macierz() {
     }
 }
 
-
 /******************************************************************************
  |  Konstruktor parametryczny klasy Macierz.                                   |
  |  Argumenty:                                                                |
@@ -27,6 +27,7 @@ Macierz<SIZE>::Macierz() {
  |  Zwraca:                                                                   |
  |      Macierz wypelniona wartosciami podanymi w argumencie.                 |
  */
+template <int SIZE>
 Macierz<SIZE>::Macierz(double tmp[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -43,8 +44,8 @@ Macierz<SIZE>::Macierz(double tmp[SIZE][SIZE]) {
  |  Zwraca:                                                                   |
  |      Iloczyn dwoch skladnikow przekazanych jako wektor.                    |
  */
-
-Wektor<SIZE> Macierz<SIZE>::operator * (Wektor<SIZE> tmp) {
+template <int SIZE>
+Wektor<SIZE> Macierz<SIZE>::operator * (Wektor<SIZE> tmp) const {
     Wektor<SIZE> result;
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -62,6 +63,7 @@ Wektor<SIZE> Macierz<SIZE>::operator * (Wektor<SIZE> tmp) {
  |  Zwraca:                                                                   |
  |      Wartosc macierzy w danym miejscu tablicy.                             |
  */
+template <int SIZE>
 double &Macierz<SIZE>::operator()(unsigned int row, unsigned int column) {
 
     if (row >= SIZE) {
@@ -77,7 +79,6 @@ double &Macierz<SIZE>::operator()(unsigned int row, unsigned int column) {
     return value[row][column];
 }
 
-
 /******************************************************************************
  |  Funktor macierzy                                                          |
  |  Argumenty:                                                                |
@@ -86,6 +87,7 @@ double &Macierz<SIZE>::operator()(unsigned int row, unsigned int column) {
  |  Zwraca:                                                                   |
  |      Wartosc macierzy w danym miejscu tablicy jako stala.                  |
  */
+template <int SIZE>
 const double &Macierz<SIZE>::operator () (unsigned int row, unsigned int column) const {
 
     if (row >= SIZE) {
@@ -109,11 +111,39 @@ const double &Macierz<SIZE>::operator () (unsigned int row, unsigned int column)
  |  Zwraca:                                                                   |
  |      Macierz - iloczyn dwóch podanych macierzy.                            |
  */
+template <int SIZE>
 Macierz<SIZE> Macierz<SIZE>::operator + (Macierz<SIZE> tmp) {
     Macierz<SIZE> result;
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
+    for (int i = 0; i < SIZE; ++i) 
+    {
+        for (int j = 0; j < SIZE; ++j) 
+        {
             result(i, j) = this->value[i][j] + tmp(i, j);
+        }
+    }
+    return result;
+}
+
+/******************************************************************************
+ |  Przeciążenie mnozenia macierzy                                           |
+ |  Argumenty:                                                                |
+ |      this - macierz, czyli pierwszy skladnik dodawania,                    |
+ |      v - wektor, czyli drugi skladnik dodawania.                           |
+ |  Zwraca:                                                                   |
+ |      Macierz - iloczyn dwóch podanych macierzy.                            |
+ */
+template <int SIZE>
+Macierz<SIZE> Macierz<SIZE>::operator * (Macierz<SIZE> tmp) {
+    Macierz<SIZE> result;
+    for (int i = 0; i < SIZE; ++i) 
+    {
+        for (int j = 0; j < SIZE; ++j) 
+        {
+            result(i,j)=0;
+            for(int k = 0; k < SIZE; ++k)
+            {
+                result(i,j) += this->value[i][k] * tmp(k, j);
+            }
         }
     }
     return result;
@@ -126,6 +156,7 @@ Macierz<SIZE> Macierz<SIZE>::operator + (Macierz<SIZE> tmp) {
  |  Zwraca:                                                                   |
  |      Wartość True lub False.                                               |
  */
+template <int SIZE>
 bool Macierz<SIZE>::operator == (const Macierz<SIZE> &Macierz) const
 {
     for(int i=0; i<SIZE; i++)
@@ -148,6 +179,7 @@ bool Macierz<SIZE>::operator == (const Macierz<SIZE> &Macierz) const
  |  Zwraca:                                                                   |
  |      Wartość True lub False.                                               |
  */
+template <int SIZE>
 bool Macierz<SIZE>::operator != (const Macierz<SIZE> &Macierz) const
 {
     if(*this == Macierz)
@@ -166,6 +198,7 @@ bool Macierz<SIZE>::operator != (const Macierz<SIZE> &Macierz) const
  |      Strm - strumien wyjsciowy,                                            |
  |      Mac - macierz.                                                        |
  */
+template <int SIZE>
 std::istream &operator>>(std::istream &Strm, Macierz<SIZE> &Mac) {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -175,13 +208,13 @@ std::istream &operator>>(std::istream &Strm, Macierz<SIZE> &Mac) {
     return Strm;
 }
 
-
 /******************************************************************************
  |  Przeciazenie operatora <<                                                 |
  |  Argumenty:                                                                |
  |      Strm - strumien wejsciowy,                                            |
  |      Mac - macierz.                                                        |
  */
+template <int SIZE>
 std::ostream &operator<<(std::ostream &Strm, const Macierz<SIZE> &Mac) {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {

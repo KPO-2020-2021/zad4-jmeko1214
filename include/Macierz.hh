@@ -31,7 +31,8 @@ class Macierz
     Macierz<SIZE>(double [SIZE][SIZE]);            // Konstruktor klasy
     Macierz<SIZE>();                               // Konstruktor klasy
     //Przeciazenia operatorow
-    Wektor<SIZE> operator * (Wektor<SIZE> tmp);           // Operator mnożenia przez wektor
+    Wektor<SIZE> operator * (Wektor<SIZE> tmp) const;           // Operator mnożenia przez wektor
+    Macierz<SIZE> operator * (Macierz<SIZE> tmp);
     Macierz<SIZE> operator + (Macierz<SIZE> tmp);
     double  &operator () (unsigned int row, unsigned int column);
     const double &operator () (unsigned int row, unsigned int column) const;
@@ -56,5 +57,7 @@ std::istream &operator>>(std::istream &Strm, Macierz<SIZE> &Mac);
 template <int SIZE>
 inline
 std::ostream& operator<<(std::ostream &Strm, const Macierz<SIZE> &Mac);
+
+#include "Macierz.cpp"
 
 #endif

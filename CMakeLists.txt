@@ -40,6 +40,8 @@ find_lto(CXX)
 set(SOURCES          # All .cpp files in src/
     src/example.cpp
     src/Prostopadloscian.cpp
+    src/Wektor3D.cpp
+    src/Macierz3x3.cpp
     src/lacze_do_gnuplota.cpp
 )
 set(TESTFILES        # All .cpp files in tests/
@@ -54,7 +56,7 @@ set(LIBRARY_NAME engine)  # Default name for the library built from src/*.cpp (c
 add_library(${LIBRARY_NAME} OBJECT ${SOURCES})
 
 # Lib needs its header files, and users of the library must also see these (PUBLIC). (No change needed)
-target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
 
 # There's also (probably) doctests within the library, so we need to see this as well.
 target_link_libraries(${LIBRARY_NAME} PUBLIC doctest)

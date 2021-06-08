@@ -71,4 +71,6 @@ template <int SIZE>
 inline
 std::ostream& operator << (std::ostream &Strm, const Wektor<SIZE> &Wek);
 
+#include "Wektor.cpp"
+
 #endif
