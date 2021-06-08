@@ -27,11 +27,15 @@ class Prostopadloscian {
     friend std::ostream & operator << (std::ostream &Strm, const Prostopadloscian &Pr);
 
   public:
-    bool Obrot(double &kat);                    //metoda odpowiada za obrot prostopadlosciana o dany kat                                                                                                                                                                                                                                                                                
-    bool Obrot(double &kat, char Os);           //metoda odpowiada o obrot okresliona os o dany kat
-
-    bool Przesuniecie(const Wektor3D &wektor);
+    Prostopadloscian();                                                                                                                                                                                                                                                                      
+    Prostopadloscian Obrot(double kat, char Os);           //metoda odpowiada o obrot okresliona os o dany kat
+    Prostopadloscian& Przesuniecie(const Wektor3D &wektor);
     void Boki() const;                          //sprawdza dlugosci poszczegolnych bokow
+
+    //bool Wczytaj_z_pliku(const std::string &NazwaPliku);
+    //bool Zapisz_do_pliku(const std::string &NazwaPliku);
+    void Zapis_do_strumienia(std::ostream& StrmWy, Prostopadloscian Pr);
+    bool Zapis_do_pliku(const std::string &NazwaPliku, const Prostopadloscian Pr);
 
     Wektor3D & operator[] (unsigned int index);         //przeciazenie operatora indeksowania, sluzy do odczytu i zapisu wierzcholkow
     bool operator == (const Prostopadloscian &prosty) const;
@@ -47,4 +51,7 @@ class Prostopadloscian {
 //wyswietla wspolrzedne wierzcholkow prostopadlosciana 
 std::ostream& operator << ( std::ostream &Strm, const Prostopadloscian &Pr); 
 
+
 #endif
+
+

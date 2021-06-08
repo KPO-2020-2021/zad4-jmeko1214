@@ -7,19 +7,21 @@
  *  wiecej kodu niz dwie linijki.
  *  Mniejsze metody mozna definiwac w ciele klasy.
  */
- 
- /*****************************************************************************
- |  Metoda klasy Prostopadloscian.                                            |
+
+ /******************************************************************************
+ |  Konstruktor bezparametryczny klasy Prostopadloscian.                      |
  |  Argumenty:                                                                |
- |     kat - zmienna przechowujaca wartosc kata w stopniach                   |
- |  Zwraca:                                                                   |
- |     obrot o zadany kat                                                     |
+ |     brak                                                                   |
  */
-bool Prostopadloscian::Obrot(double &kat)
+Prostopadloscian::Prostopadloscian()
 {
-    double obrot;
-    obrot = this->Obrot(kat, 1);
-    return obrot;
+    for(int i=0; i<WIERZCHOLKI; i++)
+    {
+        for(int j=0; j<SIZE; j++)
+        {
+            wierzcholek[i][j] = 0;
+        }
+    }
 }
 
 /******************************************************************************
@@ -30,13 +32,13 @@ bool Prostopadloscian::Obrot(double &kat)
  |  Zwraca:                                                                   |
  |     Wartosc True                                                           |
  */
-bool Prostopadloscian::Obrot(double &kat, char Os)  //krotnosc > ile razy powtorzyc obrot o dany kat
+Prostopadloscian Prostopadloscian::Obrot(double kat, char Os)  //krotnosc > ile razy powtorzyc obrot o dany kat
 {
     for(int i=0; i<WIERZCHOLKI; i++)
     {
-    	wierzcholek[i] = MacierzObrotu(kat,Os) * wierzcholek[i];
+    	(*this)[i] = MacierzObrotu(kat,Os) * (*this)[i];
     }
-    return wierzcholek;
+    return *this;
 }
 
 /******************************************************************************
@@ -46,25 +48,25 @@ bool Prostopadloscian::Obrot(double &kat, char Os)  //krotnosc > ile razy powtor
  |  Zwraca:                                                                   |
  |     True lub False                                                         |
  */
-bool Prostopadloscian::Przesuniecie(const Wektor3D &wektor)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+Prostopadloscian& Prostopadloscian::Przesuniecie(const Wektor3D &wektor)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 {
-    if(wektor[0]==0 || wektor[1]==0)
+    /*if(wektor[0]==0 || wektor[1]==0)
     {
-        return false;
+        return wektor;
     }
     else
-    {
+    {*/
         for(int i=0; i<WIERZCHOLKI; i++)
         {
-            wierzcholek[i] = wierzcholek[i] + wektor;
+            (*this)[i] = (*this)[i] + wektor;
         }
-    }
-    return true;
+    //}
+    return (*this);
 }
 
 
 /******************************************************************************
- |  Realizuje porownanie dlugosci przeciwleglych bokow prostopadlosciana      |                                               
+ |  Realizuje porownanie dlugosci rownoleglych bokow prostopadlosciana        |                                               
  |  Argumenty:                                                                |
  |     brak                                                                   |
  |  Zwraca:                                                                   |
@@ -72,72 +74,192 @@ bool Prostopadloscian::Przesuniecie(const Wektor3D &wektor)
  */
 void Prostopadloscian::Boki() const           //sprawdzenie dlugosci bokow
 {
-    double dlugosc[WIERZCHOLKI];   //przechowuje dlugosci bokow
-    for(int i=0; i<WIERZCHOLKI; i++)
+    //Obliczenie dlugosci dluzszych przeciwleglych bokow
+    double bok1 = (wierzcholek[0]-wierzcholek[2]).modul();
+    double bok2 = (wierzcholek[1]-wierzcholek[3]).modul();
+    double bok3 = (wierzcholek[4]-wierzcholek[6]).modul();
+    double bok4 = (wierzcholek[5]-wierzcholek[7]).modul();
+
+    //Obliczenie dlugosci krotszych przeciwleglych bokow
+    double bok5 = (wierzcholek[0]-wierzcholek[1]).modul();
+    double bok6 = (wierzcholek[2]-wierzcholek[3]).modul();
+    double bok7 = (wierzcholek[4]-wierzcholek[5]).modul();
+    double bok8 = (wierzcholek[6]-wierzcholek[7]).modul();
+    
+    //Obliczenie dlugosci poprzecznych przeciwleglych bokow
+    double bok9 = (wierzcholek[0]-wierzcholek[6]).modul();
+    double bok10 = (wierzcholek[1]-wierzcholek[7]).modul();
+    double bok11 = (wierzcholek[2]-wierzcholek[4]).modul();
+    double bok12 = (wierzcholek[3]-wierzcholek[5]).modul();
+
+    //wyswietlanie informacji czy odpowiadajace sobie boki sa sobie rowne
+    if((abs(bok1-bok2)<=MIN_DIFF)&&(abs(bok1-bok3)<=MIN_DIFF)&&(abs(bok1-bok4)<=MIN_DIFF))
     {
-        dlugosc[i]=(wierzcholek[i+1]-wierzcholek[i]).modul();
-    }
-    dlugosc[WIERZCHOLKI-1]=(wierzcholek[0]-wierzcholek[WIERZCHOLKI-1]).modul();
-    //sprawdzenie rownosci dlugosci przeciwleglych bokow prostopadlosciana
-    if(dlugosc[0]>dlugosc[1])
-    {
-        //dlugosc[0] i dlugosc[2] ->dluzsze boki
-        //sprawdzenie dlugosci dluzszych bokow
-        if(dlugosc[0]==dlugosc[2])
-        {
-            std::cout<<":)  Dluzsze przeciwlegle boki sa sobie rowne."<<std::endl;
-        }
-        else
-        {
-            std::cout<<":o  Dluzsze przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
-        }
-        //wyswietlenie dlugosci bokow dluzszych
-        std::cout<<"  Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[0]<<std::endl;
-        std::cout<<"    Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[2]<<std::endl<<std::endl;
-        
-        //sprawdzenie dlugosci krotszych bokow
-        if(dlugosc[1]==dlugosc[3])
-        {
-            std::cout<<":)  Krotsze przeciwlegle boki sa sobie rowne."<<std::endl;
-        }
-        else
-        {
-            std::cout<<":o  Krotsze przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
-        }
-        //wyswietlenie dlugosci bokow krotszych
-        std::cout<<"  Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[1]<<std::endl;
-        std::cout<<"    Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[3]<<std::endl;
+        std::cout<<":)  Dluzsze przeciwlegle boki sa sobie rowne."<<std::endl;
+        std::cout<<" Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<bok1<<std::endl;
+        std::cout<<"   Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<bok2<<std::endl;
+        std::cout<<"  Dlugosc trzeciego boku: "<<std::fixed<<std::setprecision(10)<<bok3<<std::endl;
+        std::cout<<"  Dlugosc czwartego boku: "<<std::fixed<<std::setprecision(10)<<bok4<<std::endl;
+        std::cout<<std::endl;
     }
     else
     {
-        //dlugosc[1] i dlugosc[3] ->dluzsze boki
-        //sprawdzenie dlugosci dluzszych bokow
-        if(dlugosc[1]==dlugosc[3])
-        {
-            std::cout<<":)  Dluzsze przeciwlegle boki sa sobie rowne."<<std::endl;
-        }
-        else
-        {
-            std::cout<<":o  Dluzsze przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
-        }
-        //wyswietlenie dlugosci bokow dluzszych
-        std::cout<<"  Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[1]<<std::endl;
-        std::cout<<"    Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[3]<<std::endl<<std::endl;
-        
-        //sprawdzenie dlugosci krotszych bokow
-        if(dlugosc[0]==dlugosc[2])
-        {
-            std::cout<<":)  Krotsze przeciwlegle boki sa sobie rowne."<<std::endl;
-        }
-        else
-        {
-            std::cout<<":o  Krotsze przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
-        }
-        //wyswietlenie dlugosci bokow krotszych
-        std::cout<<"  Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[0]<<std::endl;
-        std::cout<<"    Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<dlugosc[2]<<std::endl;
-   }
+        std::cout<<":o  Dluzsze przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
+        std::cout<<" Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<bok1<<std::endl;
+        std::cout<<"   Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<bok2<<std::endl;
+        std::cout<<"  Dlugosc trzeciego boku: "<<std::fixed<<std::setprecision(10)<<bok3<<std::endl;
+        std::cout<<"  Dlugosc czwartego boku: "<<std::fixed<<std::setprecision(10)<<bok4<<std::endl;
+        std::cout<<std::endl;
+    }
+    if((abs(bok5-bok6)<=MIN_DIFF)&&(abs(bok5-bok7)<=MIN_DIFF)&&(abs(bok5-bok8)<=MIN_DIFF))
+    {
+        std::cout<<":)  Krotsze przeciwlegle boki sa sobie rowne."<<std::endl;
+        std::cout<<" Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<bok5<<std::endl;
+        std::cout<<"   Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<bok6<<std::endl;
+        std::cout<<"  Dlugosc trzeciego boku: "<<std::fixed<<std::setprecision(10)<<bok7<<std::endl;
+        std::cout<<"  Dlugosc czwartego boku: "<<std::fixed<<std::setprecision(10)<<bok8<<std::endl;
+        std::cout<<std::endl;
+    }
+    else
+    {
+        std::cout<<":o  Krotsze przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
+        std::cout<<" Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<bok5<<std::endl;
+        std::cout<<"   Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<bok6<<std::endl;
+        std::cout<<"  Dlugosc trzeciego boku: "<<std::fixed<<std::setprecision(10)<<bok7<<std::endl;
+        std::cout<<"  Dlugosc czwartego boku: "<<std::fixed<<std::setprecision(10)<<bok8<<std::endl;
+        std::cout<<std::endl;
+    }
+    if((abs(bok9-bok10)<=MIN_DIFF)&&(abs(bok9-bok11)<=MIN_DIFF)&&(abs(bok9-bok12)<=MIN_DIFF))
+    {
+        std::cout<<":)  Poprzeczne przeciwlegle boki sa sobie rowne."<<std::endl;
+        std::cout<<" Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<bok9<<std::endl;
+        std::cout<<"   Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<bok10<<std::endl;
+        std::cout<<"  Dlugosc trzeciego boku: "<<std::fixed<<std::setprecision(10)<<bok11<<std::endl;
+        std::cout<<"  Dlugosc czwartego boku: "<<std::fixed<<std::setprecision(10)<<bok12<<std::endl;
+        std::cout<<std::endl;
+    }
+    else
+    {
+        std::cout<<":o  Poprzeczne przeciwlegle boki nie sa sobie rowne!!!"<<std::endl;
+        std::cout<<" Dlugosc pierwszego boku: "<<std::fixed<<std::setprecision(10)<<bok9<<std::endl;
+        std::cout<<"   Dlugosc drugiego boku: "<<std::fixed<<std::setprecision(10)<<bok10<<std::endl;
+        std::cout<<"  Dlugosc trzeciego boku: "<<std::fixed<<std::setprecision(10)<<bok11<<std::endl;
+        std::cout<<"  Dlugosc czwartego boku: "<<std::fixed<<std::setprecision(10)<<bok12<<std::endl;
+        std::cout<<std::endl;
+    }
 }
+
+/******************************************************************************
+ |  Realizuje wczytanie wspolrzednych Prostopadloscian z pliku                |                                               
+ |  Argumenty:                                                                |
+ |     NazwaPliku - przechowuje nazwe pliku                                   |
+ |  Zwraca:                                                                   |
+ |     True lub False                                                         |
+ */
+/*bool Prostopadloscian::Wczytaj_z_pliku(const std::string &NazwaPliku) 
+{
+    std::fstream plik;
+    Wektor3D PowtorzonyPunkt;    //ostatni wierzcholek Prostopadloscian, powtorzony dla zamkniecia rysowania
+    plik.open(NazwaPliku);
+    if(plik.is_open()==false)
+    {
+        return false;
+    }
+    else if(plik.is_open()==true)
+    {
+        for(int i=0;i<WIERZCHOLKI;i++)
+        {
+            plik>>wierzcholek[i];
+            if(plik.fail())
+            {
+                plik.close();
+                return false;
+            }
+        }
+    }
+    plik>>PowtorzonyPunkt;    //pobieranie powtorzonego (ostatniego) punktu i sprawdzenie czy jest on rowny punktowi pierwszemu
+    if(plik.fail()||(wierzcholek[0]!=PowtorzonyPunkt))
+    {
+        plik.close();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+    plik.close();
+    return true;
+}*/
+
+/******************************************************************************
+ |  Realizuje zapis wspolrzednych Prostopadloscian do pliku                   |                                               
+ |  Argumenty:                                                                |
+ |     NazwaPliku - przechowuje nazwe pliku                                   |
+ |  Zwraca:                                                                   |
+ |     True lub False                                                         |
+ */
+/*bool Prostopadloscian::Zapisz_do_pliku(const std::string &NazwaPliku)
+{
+    std::fstream plik;
+    plik.open(NazwaPliku, std::fstream::out);
+    if(plik.is_open()==false)
+    {
+        return false;
+    }
+    else
+    {
+        plik << *this;
+        plik << this->wierzcholek[0];
+        if(plik.fail())
+        {
+            plik.close();
+            return false;
+        }
+        plik.close();
+        return true;
+    }
+}*/
+
+void Prostopadloscian::Zapis_do_strumienia(std::ostream& StrmWy,  Prostopadloscian Pr)
+{
+    //zapis wspolrzednych wierzcholkow do strumienia
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[0] << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[1] << std::endl;
+    StrmWy << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[2] << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[3] << std::endl;
+    StrmWy << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[4] << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[5] << std::endl;
+    StrmWy << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[6] << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[7] << std::endl;
+    StrmWy << std::endl;
+    //powtorzenie pierwszych wierzcholkow by zamknoc bryle
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[0] << std::endl;
+    StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << Pr[1] << std::endl;
+    StrmWy << std::endl;
+}
+
+bool Prostopadloscian::Zapis_do_pliku(const std::string &sNazwaPliku, const Prostopadloscian Pr)
+{
+    std::ofstream StrmPlikowy;
+
+    StrmPlikowy.open(sNazwaPliku);
+    if(!StrmPlikowy.is_open())
+    {
+        std::cerr << ":( Operacja otwarcia do zapisu \"" << sNazwaPliku << "\"" << std::endl
+                  << ":( nie powiodla sie." << std::endl;
+        return false;
+    }
+    Zapis_do_strumienia(StrmPlikowy,Pr);
+
+    StrmPlikowy.close();
+    return !StrmPlikowy.fail();
+}
+
+
+
 
 /******************************************************************************
  |  Przeciazenie operatora porownania ==                                      |                                               
