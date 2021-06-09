@@ -24,6 +24,61 @@ Prostopadloscian::Prostopadloscian()
     }
 }
 
+/*****************************************************************************
+ |  Konstruktor parametryczny klasy Prostopadloscian.                         |
+ |  Argumenty:                                                                |
+ |     wektor - zmienna przechowuje dlugosc wektora przesuniecia              |
+ |     wysokosc - przechowuje polozenie wierzcholka na osi Oz                 |
+ |     szerokosc - przechowuje polozenie wierzcholka na osi Oy                |
+ |     dlugosc - przechowuje polozenie wierzcholka na osi Ox                  |
+ |  Zwraca:                                                                   |
+ |     Wierzcholki prostopadloscianu przesuniete o zadany wektor              | 
+ */
+Prostopadloscian::Prostopadloscian(const Wektor3D &wektor, double wysokosc, double szerokosc, double dlugosc)
+{
+    for(int i=0; i<WIERZCHOLKI; i++)
+    {
+        wierzcholek[i] = wektor;
+}
+        wierzcholek[1][0] += szerokosc;
+
+        wierzcholek[2][1] += wysokosc;
+
+        wierzcholek[3][0] += szerokosc;
+        wierzcholek[3][1] += wysokosc;
+
+        wierzcholek[4][1] += wysokosc;
+        wierzcholek[4][2] += dlugosc;
+
+        wierzcholek[5][0] += szerokosc;
+        wierzcholek[5][1] += wysokosc;
+        wierzcholek[5][2] += dlugosc;
+
+        wierzcholek[6][2] += dlugosc;
+
+        wierzcholek[7][0] += szerokosc;
+        wierzcholek[7][2] += dlugosc;
+   // }
+   /*wierzcholek[0][1] += szerokosc;
+
+        wierzcholek[2][1] += wysokosc;
+        wierzcholek[2][0] += szerokosc;
+        
+        wierzcholek[3][0] += wysokosc;
+
+        wierzcholek[4][0] += dlugosc;
+        wierzcholek[4][1] += dlugosc;
+        wierzcholek[4][2] += szerokosc;
+        
+        wierzcholek[5][0] += dlugosc;
+        wierzcholek[5][2] += dlugosc;
+
+        wierzcholek[6][1] += dlugosc;
+        wierzcholek[6][2] += szerokosc;
+        
+        wierzcholek[7][2] += dlugosc;*/
+}
+
 /******************************************************************************
  |  Metoda klasy Prostopadloscian.                                            |
  |  Argumenty:                                                                |
@@ -32,11 +87,12 @@ Prostopadloscian::Prostopadloscian()
  |  Zwraca:                                                                   |
  |     Wartosc True                                                           |
  */
-Prostopadloscian Prostopadloscian::Obrot(double kat, char Os)  //krotnosc > ile razy powtorzyc obrot o dany kat
+Prostopadloscian Prostopadloscian::Obrot(Macierz3x3 macierz)  
 {
     for(int i=0; i<WIERZCHOLKI; i++)
     {
-    	(*this)[i] = MacierzObrotu(kat,Os) * (*this)[i];
+    	//(*this)[i] = MacierzObrotu(kat,Os) * (*this)[i];
+    	(*this)[i] = macierz* (*this)[i];
     }
     return *this;
 }
@@ -75,10 +131,10 @@ Prostopadloscian& Prostopadloscian::Przesuniecie(const Wektor3D &wektor)
 void Prostopadloscian::Boki() const           //sprawdzenie dlugosci bokow
 {
     //Obliczenie dlugosci dluzszych przeciwleglych bokow
-    double bok1 = (wierzcholek[0]-wierzcholek[2]).modul();
-    double bok2 = (wierzcholek[1]-wierzcholek[3]).modul();
+    double bok1 = (wierzcholek[1]-wierzcholek[3]).modul();
+    double bok2 = (wierzcholek[5]-wierzcholek[7]).modul();
     double bok3 = (wierzcholek[4]-wierzcholek[6]).modul();
-    double bok4 = (wierzcholek[5]-wierzcholek[7]).modul();
+    double bok4 = (wierzcholek[0]-wierzcholek[2]).modul();
 
     //Obliczenie dlugosci krotszych przeciwleglych bokow
     double bok5 = (wierzcholek[0]-wierzcholek[1]).modul();
@@ -89,8 +145,8 @@ void Prostopadloscian::Boki() const           //sprawdzenie dlugosci bokow
     //Obliczenie dlugosci poprzecznych przeciwleglych bokow
     double bok9 = (wierzcholek[0]-wierzcholek[6]).modul();
     double bok10 = (wierzcholek[1]-wierzcholek[7]).modul();
-    double bok11 = (wierzcholek[2]-wierzcholek[4]).modul();
-    double bok12 = (wierzcholek[3]-wierzcholek[5]).modul();
+    double bok11 = (wierzcholek[3]-wierzcholek[5]).modul();
+    double bok12 = (wierzcholek[2]-wierzcholek[4]).modul();
 
     //wyswietlanie informacji czy odpowiadajace sobie boki sa sobie rowne
     if((abs(bok1-bok2)<=MIN_DIFF)&&(abs(bok1-bok3)<=MIN_DIFF)&&(abs(bok1-bok4)<=MIN_DIFF))
@@ -150,75 +206,13 @@ void Prostopadloscian::Boki() const           //sprawdzenie dlugosci bokow
 }
 
 /******************************************************************************
- |  Realizuje wczytanie wspolrzednych Prostopadloscian z pliku                |                                               
+ |  Realizuje zapis wspolrzednych Prostopadloscian do strumienia              |                                               
  |  Argumenty:                                                                |
- |     NazwaPliku - przechowuje nazwe pliku                                   |
+ |     StrmWy - strumien do ktorego sa zapisywane wspolrzedne wierrzcholkow   |
+ |     Pr - przechowuje wspolrzedne wierzcholkow prostopadloscianu            |
  |  Zwraca:                                                                   |
  |     True lub False                                                         |
  */
-/*bool Prostopadloscian::Wczytaj_z_pliku(const std::string &NazwaPliku) 
-{
-    std::fstream plik;
-    Wektor3D PowtorzonyPunkt;    //ostatni wierzcholek Prostopadloscian, powtorzony dla zamkniecia rysowania
-    plik.open(NazwaPliku);
-    if(plik.is_open()==false)
-    {
-        return false;
-    }
-    else if(plik.is_open()==true)
-    {
-        for(int i=0;i<WIERZCHOLKI;i++)
-        {
-            plik>>wierzcholek[i];
-            if(plik.fail())
-            {
-                plik.close();
-                return false;
-            }
-        }
-    }
-    plik>>PowtorzonyPunkt;    //pobieranie powtorzonego (ostatniego) punktu i sprawdzenie czy jest on rowny punktowi pierwszemu
-    if(plik.fail()||(wierzcholek[0]!=PowtorzonyPunkt))
-    {
-        plik.close();
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-    plik.close();
-    return true;
-}*/
-
-/******************************************************************************
- |  Realizuje zapis wspolrzednych Prostopadloscian do pliku                   |                                               
- |  Argumenty:                                                                |
- |     NazwaPliku - przechowuje nazwe pliku                                   |
- |  Zwraca:                                                                   |
- |     True lub False                                                         |
- */
-/*bool Prostopadloscian::Zapisz_do_pliku(const std::string &NazwaPliku)
-{
-    std::fstream plik;
-    plik.open(NazwaPliku, std::fstream::out);
-    if(plik.is_open()==false)
-    {
-        return false;
-    }
-    else
-    {
-        plik << *this;
-        plik << this->wierzcholek[0];
-        if(plik.fail())
-        {
-            plik.close();
-            return false;
-        }
-        plik.close();
-        return true;
-    }
-}*/
 
 void Prostopadloscian::Zapis_do_strumienia(std::ostream& StrmWy,  Prostopadloscian Pr)
 {
@@ -241,6 +235,14 @@ void Prostopadloscian::Zapis_do_strumienia(std::ostream& StrmWy,  Prostopadlosci
     StrmWy << std::endl;
 }
 
+/******************************************************************************
+ |  Realizuje zapis wspolrzednych Prostopadloscian do pliku                   |                                               
+ |  Argumenty:                                                                |
+ |     sNazwaPliku - nazwa pliku, do ktorego sa zapisywane wspolrzedne wierzch|
+ |     Pr - przechowuje wspolrzedne wierzcholkow, ktore maja byc zapisane     |
+ |  Zwraca:                                                                   |
+ |     True lub False                                                         |
+ */
 bool Prostopadloscian::Zapis_do_pliku(const std::string &sNazwaPliku, const Prostopadloscian Pr)
 {
     std::ofstream StrmPlikowy;

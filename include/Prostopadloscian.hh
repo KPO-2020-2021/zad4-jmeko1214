@@ -27,13 +27,13 @@ class Prostopadloscian {
     friend std::ostream & operator << (std::ostream &Strm, const Prostopadloscian &Pr);
 
   public:
-    Prostopadloscian();                                                                                                                                                                                                                                                                      
-    Prostopadloscian Obrot(double kat, char Os);           //metoda odpowiada o obrot okresliona os o dany kat
+    Prostopadloscian();
+    Prostopadloscian(const Wektor3D &wektor, double wysokosc, double szerokosc, double dlugosc);                                                                                                                                                                                                                                                                      
+    //Prostopadloscian Obrot(double kat, char Os);           //metoda odpowiada o obrot okresliona os o dany kat
+    Prostopadloscian Obrot(Macierz3x3 macierz);
     Prostopadloscian& Przesuniecie(const Wektor3D &wektor);
     void Boki() const;                          //sprawdza dlugosci poszczegolnych bokow
 
-    //bool Wczytaj_z_pliku(const std::string &NazwaPliku);
-    //bool Zapisz_do_pliku(const std::string &NazwaPliku);
     void Zapis_do_strumienia(std::ostream& StrmWy, Prostopadloscian Pr);
     bool Zapis_do_pliku(const std::string &NazwaPliku, const Prostopadloscian Pr);
 

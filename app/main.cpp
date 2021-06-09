@@ -28,13 +28,15 @@ void Menu_wyswietl()
   cout<<endl;
   cout<<" Menu programu:"<<endl<<endl;
   cout<<" o - obrot prostopadloscianu o zadany kat"<<endl;
+  cout<<" t - powtorzenie poprzedniego obrotu"<<endl;
+  cout<<" r - wyswietlenie macierzy rotacji"<<endl;
   cout<<" p - przesuniecie prostopadloscianu o zadany wektor"<<endl;
   cout<<" w - wyswietlanie wspolrzednych wierzcholkow"<<endl;
+  cout<<" s - sprawdzenie dlugosci przeciwleglych bokow"<<endl;
   cout<<" m - wyswietl menu"<<endl;
   cout<<" k - koniec dzialania programu"<<endl;
+  cout<<endl;
 }
-
-
 
 /*
  * Simple main program that demontrates how access
@@ -50,37 +52,31 @@ int main() {
             << "."
             << PROJECT_VERSION_TWEAK /* zmiany estetyczne itd. */
             << endl;
-
   PzG::LaczeDoGNUPlota  Lacze;  // Zmienna odpowiada za wizualizacje rysunku prostopadloscianu
-  // Zmienna odpowiada za zapis wspolrzednych do strumienia
-  /*Prostopadloscian Pr{{10,  25,  10 }
-                      {150, 25,  10 },
-                      {10,  100, 10 },
-                      {150, 100, 10 },
-                      {10,  100, 110},
-                      {150, 100, 110},
-                      {10,  25,  110},
-                      {150, 25,  110}};  */
- Prostopadloscian Pr{{10,  25,  10 },{150, 25,  10 },{10,  100, 10 },{150, 100, 10 },{10,  100, 110},{150, 100, 110},{10,  25,  110},{150, 25,  110}};  
-
   Lacze.DodajNazwePliku("../datasets/Prostopadloscian.dat",PzG::RR_Ciagly,2);
   Lacze.ZmienTrybRys(PzG::TR_3D);
   // Ustawienie zakresow poszczegolnych osi
-  Lacze.UstawZakresY(-155,155);
-  Lacze.UstawZakresX(-155,155);
-  Lacze.UstawZakresZ(-155,155);
+  Lacze.UstawZakresY(-200,200);
+  Lacze.UstawZakresX(-200,200);
+  Lacze.UstawZakresZ(-200,200);
 
   double kat;
-  int krotnosc;
-  Wektor3D wektor;
+  double wek[] = {15.0, 25.0, 40.0};
+  Wektor3D wektor(wek);
+  Prostopadloscian Pr(wektor, 100, 80, 60);
   Prostopadloscian prosty;
-  char opcja;  //zmienna dla obslugi prostego menu
+  Macierz3x3 obrot;   //macierz obrotu
+  Macierz3x3 obrot2;  //zmienna pomocnicza do powtorzenia obrotu
+  char opcja;         //zmienna dla obslugi prostego menu
+  char os;            //zmienna dla wyboru osi obrotu
+  
 
   cout<<"\n Program rysuje w gnuplocie Prostopadloscian z pliku,"<<endl;
   cout<<" obraca go o zadany kat i przesuwa o zadany wektor."<<endl;
   cout<<" Wynik jest wyswietlany w gnuplocie oraz zapisywany do pliku."<<endl;
   
   Menu_wyswietl();   //wyswietlenie prostego menu
+  Pr.Boki();    // wyswietla dlugosci bokow z dokladnoscia do 10 miejsc po przecinku
 
   while(opcja!='k')
   {
@@ -89,7 +85,6 @@ int main() {
       cerr<<"Blad! Nie udalo sie wczytac pliku ze wspolrzednymi prostokota!"<<endl;
       return 1;
     }
-    prosty.Boki(); // wyswietla dlugosci bokow z dokladnoscia do 10 miejsc po przecinku
     Lacze.Rysuj(); // <- Tutaj gnuplot rysuje, to co zapisaliśmy do pliku
     cout<<endl;
     cout<<" Twoj wybor? (m - menu) > ";
@@ -100,30 +95,57 @@ int main() {
     {
       case 'o':
       {
-        cout<<" Podaj wartosc kata obrotu w stopniach"<<endl;
-        cin>>kat;
-        cout<<" Ile razy operacja obrotu ma byc powtorzona?"<<endl;
-        cin>>krotnosc;
-        prosty.Obrot(kat,krotnosc);
-        prosty.Zapis_do_pliku("../datasets/Prostopadloscian.dat",Pr);
-        Lacze.Rysuj();
-        prosty.Boki();
+        cout<<" Podaj os, wedlug ktorej chcesz dokonac obrotu, oraz kat w stopniach: "<<endl;
+        cin >> os >> kat;
+        if(os=='x'||os=='y'||os=='z')
+        {
+          obrot=MacierzObrotu(kat,os);
+          Pr=Pr.Obrot(obrot);
+        }
+        else
+        {
+          cerr<< " Nieznana opcja. Dopuszczalne opcje: x,y,z lub X,Y,Z"<<endl;
+        }
+        break;
+      }
+      case 't':
+      {
+        obrot2=obrot;
+        Pr=Pr.Obrot(obrot2);
+        break;
+      }
+      case 'r':
+      {
+        cout<<" Wybierz os, dla ktorej wyswietlic macierz rotacji. "<<endl;
+        cin >> os >> kat;
+        if(os=='x'||os=='y'||os=='z')
+        {
+          obrot=MacierzObrotu(kat,os);
+          cout<<obrot<<endl;
+        }
+        else
+        {
+          cerr<< " Nieznana opcja. Dopuszczalne opcje: x,y,z lub X,Y,Z"<<endl;
+        }
         break;
       }
       case 'p':
       {
-        cout<<" Wprowadz wspolrzedne wektora translacji w postaci dwoch liczb"<<endl;
-        cout<<" tzn. wspolrzednej x oraz wsporzednej y."<<endl;
+        cout<<" Wprowadz wspolrzedne wektora translacji w postaci trzech liczb"<<endl;
+        cout<<" tzn. wspolrzednych: x, y oraz z."<<endl;
         cin>>wektor;
-        prosty.Przesuniecie(wektor);
-        prosty.Zapis_do_pliku("../datasets/Prostopadloscian.dat",Pr);
-        Lacze.Rysuj();
+        Pr.Przesuniecie(wektor);
         break;
       }
       case 'w':
       {
         cout<<endl;
-        cout<<prosty<<endl;     //wyswietla nam wspolrzedne wierzcholkow
+        cout<<Pr<<endl;     //wyswietla nam wspolrzedne wierzcholkow
+        break;
+      }
+      case 's':
+      {
+        Pr.Boki();
         break;
       }
       case 'm':
