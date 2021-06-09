@@ -1,5 +1,4 @@
 #include "../tests/doctest/doctest.h"
-#include "../include/Macierz.hh"
 #include "../include/Macierz3x3.hh"
 #include "../include/Wektor3D.hh"
 

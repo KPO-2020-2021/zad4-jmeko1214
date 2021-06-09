@@ -39,44 +39,25 @@ Prostopadloscian::Prostopadloscian(const Wektor3D &wektor, double wysokosc, doub
     for(int i=0; i<WIERZCHOLKI; i++)
     {
         wierzcholek[i] = wektor;
-}
-        wierzcholek[1][0] += szerokosc;
+    }
+    wierzcholek[1][0] += szerokosc;
 
-        wierzcholek[2][1] += wysokosc;
+    wierzcholek[2][1] += wysokosc;
 
-        wierzcholek[3][0] += szerokosc;
-        wierzcholek[3][1] += wysokosc;
+    wierzcholek[3][0] += szerokosc;
+    wierzcholek[3][1] += wysokosc;
 
-        wierzcholek[4][1] += wysokosc;
-        wierzcholek[4][2] += dlugosc;
+    wierzcholek[4][1] += wysokosc;
+    wierzcholek[4][2] += dlugosc;
 
-        wierzcholek[5][0] += szerokosc;
-        wierzcholek[5][1] += wysokosc;
-        wierzcholek[5][2] += dlugosc;
+    wierzcholek[5][0] += szerokosc;
+    wierzcholek[5][1] += wysokosc;
+    wierzcholek[5][2] += dlugosc;
 
-        wierzcholek[6][2] += dlugosc;
+    wierzcholek[6][2] += dlugosc;
 
-        wierzcholek[7][0] += szerokosc;
-        wierzcholek[7][2] += dlugosc;
-   // }
-   /*wierzcholek[0][1] += szerokosc;
-
-        wierzcholek[2][1] += wysokosc;
-        wierzcholek[2][0] += szerokosc;
-        
-        wierzcholek[3][0] += wysokosc;
-
-        wierzcholek[4][0] += dlugosc;
-        wierzcholek[4][1] += dlugosc;
-        wierzcholek[4][2] += szerokosc;
-        
-        wierzcholek[5][0] += dlugosc;
-        wierzcholek[5][2] += dlugosc;
-
-        wierzcholek[6][1] += dlugosc;
-        wierzcholek[6][2] += szerokosc;
-        
-        wierzcholek[7][2] += dlugosc;*/
+    wierzcholek[7][0] += szerokosc;
+    wierzcholek[7][2] += dlugosc;
 }
 
 /******************************************************************************
@@ -106,17 +87,10 @@ Prostopadloscian Prostopadloscian::Obrot(Macierz3x3 macierz)
  */
 Prostopadloscian& Prostopadloscian::Przesuniecie(const Wektor3D &wektor)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 {
-    /*if(wektor[0]==0 || wektor[1]==0)
+    for(int i=0; i<WIERZCHOLKI; i++)
     {
-        return wektor;
+        (*this)[i] = (*this)[i] + wektor;
     }
-    else
-    {*/
-        for(int i=0; i<WIERZCHOLKI; i++)
-        {
-            (*this)[i] = (*this)[i] + wektor;
-        }
-    //}
     return (*this);
 }
 
@@ -259,9 +233,6 @@ bool Prostopadloscian::Zapis_do_pliku(const std::string &sNazwaPliku, const Pros
     StrmPlikowy.close();
     return !StrmPlikowy.fail();
 }
-
-
-
 
 /******************************************************************************
  |  Przeciazenie operatora porownania ==                                      |                                               

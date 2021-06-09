@@ -23,6 +23,11 @@
 
 using namespace std;
 
+/*!
+ * \brief Proste menu
+ *
+ * Wyswietla proste menu programu.
+ */
 void Menu_wyswietl()
 {
   cout<<endl;
@@ -38,9 +43,12 @@ void Menu_wyswietl()
   cout<<endl;
 }
 
-/*
- * Simple main program that demontrates how access
- * CMake definitions (here the version number) from source code.
+/*!
+ * \brief Glowna petla programu
+ *
+ * Petla main, w ktorej jest zawarte wywolywanie poszczegolnych
+ * funkcji programu. Zawiera proste menu obslugujace rotacje, oraz
+ * przesuniecie Prostopadloscianu.
  */
 int main() {
   cout << "Project Rotation 3D based on C++ Boiler Plate v"
